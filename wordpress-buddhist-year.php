@@ -1,11 +1,11 @@
 <?php
 /*
-Plugin Name: Seed Buddhist Year
-Plugin URI: https://github.com/SeedThemes/seed-buddhist-year
-Description: A plugin for setting the year to the buddhist year
-Version: 1.0.3
-Author: SeedThemes
-Author URI: http://www.seedthemes.com
+Plugin Name: WordPress Buddhist Year
+Plugin URI: https://github.com/rabbitinblack/wordpress-buddhist-year
+Description: A plugin for setting the year to the buddhist year. Fork from Seed Buddhist year.
+Version: 1.0.4
+Author: Rabbitinblack
+Author URI: http://www.rabbitinblack.com
 License: GPL2
 */
 
@@ -13,7 +13,7 @@ License: GPL2
 Copyright 2016-2020 Seed Webs Co., Ltd.  (email : info@seedwebs.com)
 
 This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License, version 2, as 
+it under the terms of the GNU General Public License, version 2, as
 published by the Free Software Foundation.
 
 This program is distributed in the hope that it will be useful,
@@ -26,42 +26,42 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-if(!class_exists('Seed_Buddhist_Year')) {
-    class Seed_Buddhist_Year {
+if ( ! class_exists( 'WordPress_Buddhist_Year' ) ) {
+    class WordPress_Buddhist_Year {
 
         /**
          * Construct the plugin object
          */
         public function __construct() {
             // register actions
-        } 
-    
+        }
+
         /**
          * Activate the plugin
          */
         public static function activate() {
             // Do nothing
         }
-    
+
         /**
          * Deactivate the plugin
-         */     
+         */
         public static function deactivate() {
             // Do nothing
         }
     }
 }
 
-if(class_exists('Seed_Buddhist_Year')) {
+if(class_exists('WordPress_Buddhist_Year')) {
     // Installation and uninstallation hooks
-    register_activation_hook(__FILE__, array('Seed_Buddhist_Year', 'activate'));
-    register_deactivation_hook(__FILE__, array('Seed_Buddhist_Year', 'deactivate'));
+    register_activation_hook(__FILE__, array('WordPress_Buddhist_Year', 'activate'));
+    register_deactivation_hook(__FILE__, array('WordPress_Buddhist_Year', 'deactivate'));
 
     // instantiate the plugin class
-    $Seed_Buddhist_Year = new Seed_Buddhist_Year();
+    $WordPress_Buddhist_Year = new WordPress_Buddhist_Year();
 }
 
-function seed_is_return_buddhist( $format ) {
+function wordpress_is_return_buddhist( $format ) {
 	$return = false;
 
 	if ( 	( FALSE !== ( $offset = stripos( $format , 'y' ) ) )
@@ -81,23 +81,23 @@ function seed_is_return_buddhist( $format ) {
 	return $return;
 }
 
-add_filter( 'get_the_date', 'seed_buddhist_year_get_the_date', 10, 3 );
-add_filter( 'the_date', 'seed_buddhist_year_the_date', 10, 4 );
-add_filter( 'get_the_time', 'seed_buddhist_year_get_the_time', 10, 3 );
-add_filter( 'the_time', 'seed_buddhist_year_the_time', 10, 2 );
+add_filter( 'get_the_date', 'wordpress_buddhist_year_get_the_date', 10, 3 );
+add_filter( 'the_date', 'wordpress_buddhist_year_the_date', 10, 4 );
+add_filter( 'get_the_time', 'wordpress_buddhist_year_get_the_time', 10, 3 );
+add_filter( 'the_time', 'wordpress_buddhist_year_the_time', 10, 2 );
 
-add_filter( 'get_comment_date', 'seed_buddhist_year_get_comment_date', 10, 3 );
-add_filter( 'get_comment_time', 'seed_buddhist_year_get_comment_time', 10, 5 );
+add_filter( 'get_comment_date', 'wordpress_buddhist_year_get_comment_date', 10, 3 );
+add_filter( 'get_comment_time', 'wordpress_buddhist_year_get_comment_time', 10, 5 );
 
-function seed_buddhist_year_get_comment_date( $date, $format, $comment ) {
-	return seed_buddhist_year( $format, strtotime( $comment->comment_date ) );
+function wordpress_buddhist_year_get_comment_date( $date, $format, $comment ) {
+	return wordpress_buddhist_year( $format, strtotime( $comment->comment_date ) );
 }
 
-function seed_buddhist_year_get_comment_time ( $time, $format, $gmt = false, $translate = true, $comment ) {
-	return fix_seed_buddhist_year_comment_time( $format, strtotime( $comment->comment_date ) );
+function wordpress_buddhist_year_get_comment_time ( $time, $format, $gmt = false, $translate = true, $comment ) {
+	return fix_wordpress_buddhist_year_comment_time( $format, strtotime( $comment->comment_date ) );
 }
 
-function seed_buddhist_year_get_the_date($content = '', $format = '', $post_input = null) {
+function wordpress_buddhist_year_get_the_date($content = '', $format = '', $post_input = null) {
 	global $post;
 
 	$the_date = null;
@@ -119,8 +119,8 @@ function seed_buddhist_year_get_the_date($content = '', $format = '', $post_inpu
 		$format = get_option( 'date_format' );
 	}
 
-	if( seed_is_return_buddhist( $format ) ) {
-		$return = seed_buddhist_year( $format, $the_date );
+	if( wordpress_is_return_buddhist( $format ) ) {
+		$return = wordpress_buddhist_year( $format, $the_date );
 	} else {
 		$return = $content;
 	}
@@ -128,11 +128,11 @@ function seed_buddhist_year_get_the_date($content = '', $format = '', $post_inpu
 	return $return;
 }
 
-function seed_buddhist_year_the_date($content = '', $format = '', $before = '', $after = '') {
+function wordpress_buddhist_year_the_date($content = '', $format = '', $before = '', $after = '') {
 	return $before.get_the_date( $format ).$after;
 }
 
-function seed_buddhist_year_get_the_time($content = '', $format = '', $post_input = null) {
+function wordpress_buddhist_year_get_the_time($content = '', $format = '', $post_input = null) {
 	global $post;
 
 	$the_date = null;
@@ -154,8 +154,8 @@ function seed_buddhist_year_get_the_time($content = '', $format = '', $post_inpu
 		$format = get_option( 'time_format' );
 	}
 
-	if( seed_is_return_buddhist( $format ) ) {
-		$return = seed_buddhist_year( $format, $the_date );
+	if( wordpress_is_return_buddhist( $format ) ) {
+		$return = wordpress_buddhist_year( $format, $the_date );
 	} else {
 		$return = $content;
 	}
@@ -163,15 +163,15 @@ function seed_buddhist_year_get_the_time($content = '', $format = '', $post_inpu
 	return $return;
 }
 
-function seed_buddhist_year_the_time($content = '', $format = '') {
+function wordpress_buddhist_year_the_time($content = '', $format = '') {
 	return get_the_time( $format );
 }
 
-function fix_seed_buddhist_year_comment_time($content = '', $time = '') {
+function fix_wordpress_buddhist_year_comment_time($content = '', $time = '') {
 	return date('H:i:s', $time );
 }
 
-function seed_buddhist_year( $format = '', $time = null ) {
+function wordpress_buddhist_year( $format = '', $time = null ) {
 	$return = '';
 
 	if( $format == '' ) {
